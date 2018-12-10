@@ -1,0 +1,121 @@
+composer create-project laravel/laravel 02-probando-database --prefer-dist
+
+composer create-project laravel/laravel proyecto "5.2.*"	
+
+/**********************Estructura de carpetas */
+app-contiene el codigo principal de la aplicacion
+	-http
+		-controller
+		-middleware- clases intermedias que validan antes de ejecutar el controlador, acceso token
+		-routes, se encuentran todas las rutas del proyecto
+
+	-providers, crear clases provedores de servicios
+
+boostrap- se carga al iniciar el proyecto
+
+config- archivos de configuracion, como la bd, cambiar idioma del proyecto, cargar provedires
+
+database- configuracion de a db
+	-migrations, modificar la base desde la migracion auto
+	-seeds, permite llenar la bd con informacion de prueba
+
+public- archivo .htaccess
+
+resources- contiene imagenes, hojas css
+
+storage- se almacenan los archivos que se suben al proyecto como archivos pdf
+
+test- pruebas unitarias
+
+vendor- archvios creados por laravel
+	-.env configurar cadena de conexion
+	-composer.json se carga la configuracion del proyecto
+
+/*****************Crear controller con artisan */
+=>php artisan mkdir:controller name_controller --resource para crear los metodos index, store,etc..
+
+/*****************Verificar las rutas con artisan */
+=>php artisan route:list
+
+/****************Crear request con artisan */
+=>php artisan mkdir:request name_request
+
+/***************Crear middleware con artisan, colocar nombre del archivo con la accion */
+=>php artisan mkdir:middleware  VerificarSession 
+
+/*****************Crear archivos auth con artisan */
+=>php artisan make:auth, crea los diferentes archivos para un login
+/********************************Archivo routes */
+=> cargar ruta por defecto www.misitio.com Route::get('/') 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+=>Indicar solo un recurso de rutas en general, esto se debe colocar desde el inicio y con esto no creas una ruta para cada accion
+  Route::resource('mensajes', 'MessageController');
+
+
+=> cargar ruta por defecto www.misitio.com/contacto Route::get('contacto', function () {}
+Route::get('contacto', function () {
+    return "Hola contacto";
+});
+
+/*********************************Middleware*/
+=> son clases que ayudan a los controladores a verificar si la informacion en el request es correcta, si es erronea no dejara pasar la accion, por lo regular se mandan a llamar dentro de los
+	controladores, ya sea en el constructor o en un metodo, lo recomendable es llamarlo en los metodos
+
+/*********************************Configuracion a BD */
+=> config/database.php, en este archivo se utiliza para mandar a llamar nuestra configuracion
+	que se encuentra en el archivo .env de la raiz
+=>.env, en este archivo se encuentran las variables para configurar la conexion
+
+/***Control de versiones Migrations https://laravel.com/docs/5.7/migrations*/
+database/migrations/		
+
+=>php artisan migrate, migra todas las tablas del proyecto
+ public function up()// se ejecuta al utiliza php artisan migrate
+
+=>php artisan migrate:refresh, migra todas las tablas del proyecto, primero ejecuta un rollback y despues hace un migrate
+=>php artisan migrate:rollback, desace migracion
+ public function down()// se ejecuta al utiliza php artisan migrate:rollback
+ 
+=>php artisan make:migrate, se utiliza para crear migraciones de archivos, se debe ser especifico al colocar el nombre
+ php artisan make:migration create_users_table --create=users	
+
+=>php artisan migrate, despues de crear el archivo migracion se debe ejecutar este comando para que se haga la migracion a mysql
+
+/**Migracion**/
+ => para agregar un campo a una tabla ya emigrada se debe hacer los siguiente
+	php artisan make:migration add_phone_table_messages_table --table=messages, despues abrir el archivo migracion del proyecto y agregar el campo
+ =>despues escribir un comado migrate
+
+
+/*********************************Diseño Rest*/
+GET-------------------->/messages--------------->MessageController@index------------>Todos los mensajes
+GET-------------------->/messages/create-------->MessageController@create----------->Formulario de creacion
+POST------------------->/messages--------------->MessageController@store------------>Guardar Mensajes y redireccionar
+GET-------------------->/messages/{id}---------->MessageController@show------------->Un mensaje especifico
+GET-------------------->/messages/{id}/edit----->MessageController@edit------------->Formulario de edicion
+PUT/PATCH-------------->/messages/{id}---------->MessageController@update----------->Actualizar mensaje y redirecciona
+DELETE----------------->/messages/{id}---------->MessageController@destroy---------->Elimina mensaje y redirecciona
+
+CREATE--->POST
+READ----->GET
+UPDATE--->PUT/PATCH
+DELETE--->DELETE
+
+Actualmente el navegador solo acepta metodos get, post. En laravel se debe agregar un Campo oculto para indicar si es un UPDATE o DELETE, esto
+se hace de manera interna para que se realice la operacion aunque se este utilizando metodo GET o POST.
+/*********************************Eloquen*/
+
+=>php artisan make:model Message, laravel asume que en la base de datos existe una tabla message en minuscula y en plural, en caso contrario debes agregar en el modelo
+	una variable protected $tabla='nombre de la tabla';
+/*********************************Validar formularios https://laravel.com/docs/5.7/validation*/
+=> ingrear a esta ruta y sustituir los archivos https://github.com/caouecs/Laravel-lang 
+Para cambiar el idioma de los mensajes se de ingresar a la carpeta resources/lang/ y duplicar la carpeta en, cambiar el nombre a es
+despues ir al archivo que se config/app.php y cambiarlo por es
+    'locale' => 'es',
+
+
+
+

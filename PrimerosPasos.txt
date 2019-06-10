@@ -90,7 +90,134 @@ database/migrations/
  =>despues escribir un comado migrate
 
 
-/*********************************Dise�o Rest*/
+/*********************************Eloquen*/
+
+=>php artisan make:model Message, laravel asume que en la base de datos existe una tabla message en minuscula y en plural, en caso contrario debes agregar en el modelo
+	una variable protected $tabla='nombre de la tabla';
+/*********************************Validar formularios https://laravel.com/docs/5.7/validation*/
+=> ingrear a esta ruta y sustituir los archivos https://github.com/caouecs/Laravel-lang 
+Para cambiar el idioma de los mensajes se de ingresar a la carpeta resources/lang/ y duplicar la carpeta en, cambiar el nombre a es
+despues ir al archivo que se config/app.php y cambiarlo por es
+    'locale' => 'es',
+
+
+
+composer create-project laravel/laravel 04-Apilaravel --prefer-dist
+
+composer create-project laravel/laravel proyecto "5.4.*"	
+
+/**********************Estructura de carpetas */
+app-contiene el codigo principal de la aplicacion
+	-http
+		-controller
+		-middleware- clases intermedias que validan antes de ejecutar el controlador, acceso token
+			-routes, se encuentran todas las rutas del proyecto
+
+	-providers, crear clases provedores de servicios
+
+boostrap- se carga al iniciar el proyecto
+
+config- archivos de configuracion, como la bd, cambiar idioma del proyecto, cargar provedires
+
+database- configuracion de a db
+	-migrations, modificar la base desde la migracion auto
+	-seeds, permite llenar la bd con informacion de prueba
+
+public- archivo .htaccess
+
+resources- contiene imagenes, hojas css
+
+storage- se almacenan los archivos que se suben al proyecto como archivos pdf
+
+test- pruebas unitarias
+
+vendor- archvios creados por laravel
+	-.env configurar cadena de conexion
+	-composer.json se carga la configuracion del proyecto
+
+/*********************************Validar formularios https://laravel.com/docs/5.7/validation*/
+=> ingrear a esta ruta y sustituir los archivos https://github.com/caouecs/Laravel-lang 
+Para cambiar el idioma de los mensajes se de ingresar a la carpeta resources/lang/ y duplicar la carpeta en, cambiar el nombre a es
+despues ir al archivo que se config/app.php y cambiarlo por es
+    'locale' => 'es',
+
+/*****************Crear controller con artisan */
+
+=>php artisan mkdir:controller name_controller --resource para crear los metodos index, store,etc..
+
+/*****************Verificar las rutas con artisan */
+=>php artisan route:list
+
+/****************Crear request con artisan */
+=>php artisan mkdir:request name_request
+
+/***************Crear middleware con artisan, colocar nombre del archivo con la accion */
+=>php artisan mkdir:middleware  VerificarSession 
+
+/*****************Crear archivos auth con artisan */
+=>php artisan make:auth, crea los diferentes archivos para un login
+/********************************Archivo routes */
+=> cargar ruta por defecto www.misitio.com Route::get('/') 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+=>Indicar solo un recurso de rutas en general, esto se debe colocar desde el inicio y con esto no creas una ruta para cada accion
+  Route::resource('mensajes', 'MessageController');
+
+
+=> cargar ruta por defecto www.misitio.com/contacto Route::get('contacto', function () {}
+Route::get('contacto', function () {
+    return "Hola contacto";
+});
+
+/*********************************Middleware*/
+=> son clases que ayudan a los controladores a verificar si la informacion en el request es correcta, si es erronea no dejara pasar la accion, por lo regular se mandan a llamar dentro de los
+	controladores, ya sea en el constructor o en un metodo, lo recomendable es llamarlo en los metodos
+
+/*********************************Configuracion a BD */
+=> config/database.php, en este archivo se utiliza para mandar a llamar nuestra configuracion
+	que se encuentra en el archivo .env de la raiz
+=>.env, en este archivo se encuentran las variables para configurar la conexion
+
+/***Control de versiones Migrations https://laravel.com/docs/5.7/migrations*/
+database/migrations/		
+
+=>php artisan migrate, migra todas las tablas del proyecto
+ public function up()// se ejecuta al utiliza php artisan migrate
+
+=>php artisan migrate:status, refleja el status de la migracion
+
+=>php artisan migrate:reset, resetea las migraciones
+
+=>php artisan migrate:refresh, migra todas las tablas del proyecto, primero ejecuta un rollback y despues hace un migrate
+
+=>php artisan migrate:rollback, desace migracion
+ public function down()// se ejecuta al utiliza php artisan migrate:rollback
+ 
+=>php artisan make:migrate, se utiliza para crear migraciones de archivos, se debe ser especifico al colocar el nombre
+ php artisan make:migration create_users_table --create=users	de igual manera se pueden utilizar las migraciones
+para modificar tablas ya echas mediante el metodo up, se coloca el nombre de la tabla y una funcion para hacer los cambios
+=> php artisan make:migration category_product_table --create=category_product, crea una tabla pivote que es una relacion de N:M, el nombre de la tabla debe ir 
+en orden alfabetico y con el nombre de los modelos.
+function up(){
+Shema:: table('frutas',function(Blueprint $table){
+	$table->string('pais')->after('temporada');//añadir despues del campo temporada
+	$table->renameColumn('nombre_fruta','nombre');//renombrar columna
+});
+
+}
+--https://victorroblesweb.es/2015/06/11/migraciones-en-laravel-5/
+
+=>php artisan migrate, despues de crear el archivo migracion se debe ejecutar este comando para que se haga la migracion a mysql
+
+/**Migracion**/
+ => para agregar un campo a una tabla ya emigrada se debe hacer los siguiente
+	php artisan make:migration add_phone_table_messages_table --table=messages, despues abrir el archivo migracion del proyecto y agregar el campo
+ =>despues escribir un comado migrate
+
+
+/*********************************Diseño Rest*/
 GET-------------------->/messages--------------->MessageController@index------------>Todos los mensajes
 GET-------------------->/messages/create-------->MessageController@create----------->Formulario de creacion
 POST------------------->/messages--------------->MessageController@store------------>Guardar Mensajes y redireccionar
@@ -110,12 +237,119 @@ se hace de manera interna para que se realice la operacion aunque se este utiliz
 
 =>php artisan make:model Message, laravel asume que en la base de datos existe una tabla message en minuscula y en plural, en caso contrario debes agregar en el modelo
 	una variable protected $tabla='nombre de la tabla';
-/*********************************Validar formularios https://laravel.com/docs/5.7/validation*/
-=> ingrear a esta ruta y sustituir los archivos https://github.com/caouecs/Laravel-lang 
-Para cambiar el idioma de los mensajes se de ingresar a la carpeta resources/lang/ y duplicar la carpeta en, cambiar el nombre a es
-despues ir al archivo que se config/app.php y cambiarlo por es
-    'locale' => 'es',
 
 
 
 
+/*********************************Seeder*/
+=>php artisan make:seeder nombre_archivo, Llenado automatico de informacion
+=>php artisan migrate:refresh --seed refrescar los datos haciendo primero un rollback y despues envia las migraciones
+
+
+function run(){
+	for($i=0; $i<=40; $i++){
+	DB::table('notes')->insert(
+	array('title'=>'Mi nota'.$i,'description'=>'Mi 'title'=>'Mi nota'.$i'.$i));
+	}
+	$this->command->info('Tabla de notas Rellenadas corectamente');
+}
+
+=>php artisan db:seed --class=RellenaNotas nombre_archivo, ejecutar seeder
+
+******si sale error, actualizar composer para que reconozca la clase
+ composer dump-autoload
+/*********************************QueryBuilder*/
+https://victorroblesweb.es/2015/06/23/query-builder-en-laravel-5/
+
+public function getIndex() {
+ 
+    // Conseguir todos los cineastas
+    $cineastas = DB::table('cineastas')->get();
+ 
+    foreach ($cineastas as $cineasta) {
+        var_dump($cineasta->nombre);
+    }
+ 
+    // Condición where y first para conseguir una sola linea
+    $cineasta = DB::table('cineastas')->where('nombre', 'test55')->first();
+    var_dump($cineasta->nombre);
+    var_dump($cineasta->edad);
+ 
+    //Conseguir columnas especificas
+    $cineastas = DB::table('cineastas')->select('id', 'nombre')->get();
+    foreach ($cineastas as $cineasta) {
+        var_dump($cineasta->id);
+        var_dump($cineasta->nombre);
+    }
+     
+    // Where
+     
+        //AND
+        $cineastas = DB::table('cineastas')
+                    ->where('edad', '>', 40)
+                    ->where('nombre', 'test42')
+                    ->get();
+ 
+        foreach ($cineastas as $cineasta) {
+            var_dump($cineasta->nombre." ".$cineasta->edad);
+        }
+     
+        // OR
+        $cineastas = DB::table('cineastas')
+                    ->where('edad', '>', 40)
+                    ->orWhere('nombre', 'test12')
+                    ->get();
+ 
+        foreach ($cineastas as $cineasta) {
+            var_dump($cineasta->nombre." ".$cineasta->edad);
+        }
+         
+    //Where dinamicos
+        // Consigue los cineastas cuando el id y el nombre sean esos
+        $cineasta = DB::table('cineastas')
+                ->whereIdAndNombre(70, 'test69')
+                ->first();
+        var_dump($cineasta);
+}
+=> Insertar en la base de datos
+
+	Insertar registros en la base de datos es simple.
+
+	DB::table('cineastas')->insert(
+    	['nombre' => 'Christopher Nolan', 'edad' => 44]
+	);
+	También podríamos pasarle un array multidimensional y funcionará.
+
+=> Actualizar registros
+	Podemos actualizar el cineasta con id 44 y cambiarle el nombre.
+
+	DB::table('cineastas')
+            ->where('id', 44)
+            ->update(['nombre' => 'Víctor Robles']);
+
+	También tenemos métodos para incrementar y reducir el valor de algún campo.
+
+=> Borrar registros
+	Podemos borrar registros concreto.
+
+	DB::table('cineastas')->where('edad', '>', 66)->delete();
+	Borrar todo el contenido de una tabla.
+
+	DB::table('cineastas')->delete();
+	Truncar la tabla para que los indices autoincrementales empiecen de cero.
+
+	DB::table('cineastas')->truncate();
+/*********************************Generar archivos de login auto. junto con boostrap*/
+
+=>php artisan make:auth
+
+/*********************************Helpers*/
+
+https://victorroblesweb.es/2018/01/18/crear-helpers-en-laravel-5/
+
+/*****************Cambiar nombre de la aplicacion */
+
+=>php artisan app:name "nombre" 
+
+/*****************Libreria para hacer peticiones https mas rapido http://docs.guzzlephp.org/en/stable/*/
+=>composer require guzzlehttp/guzzle

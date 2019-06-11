@@ -100,13 +100,18 @@ Para cambiar el idioma de los mensajes se de ingresar a la carpeta resources/lan
 despues ir al archivo que se config/app.php y cambiarlo por es
     'locale' => 'es',
 
-
+https://www.php.net/manual/es/timezones.america.php
+https://github.com/Laraveles/spanish
 
 composer create-project laravel/laravel 04-Apilaravel --prefer-dist
 
 composer create-project laravel/laravel proyecto "5.4.*"	
 
 /**********************Estructura de carpetas */
+cambiar nombre de proyecto
+
+php artisan app:name Market
+
 app-contiene el codigo principal de la aplicacion
 	-http
 		-controller

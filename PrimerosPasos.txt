@@ -176,6 +176,13 @@ Route::get('contacto', function () {
     return "Hola contacto";
 });
 
+
+=> cargar ruta dejando solamente los metodos escritos
+Route::resource('projects', 'Portafolio')->only(['index','show']);
+
+=> cargar ruta excepto solamente los metodos escritos
+Route::resource('projects', 'Portafolio')->except(['index','show']);
+
 /*********************************Middleware*/
 => son clases que ayudan a los controladores a verificar si la informacion en el request es correcta, si es erronea no dejara pasar la accion, por lo regular se mandan a llamar dentro de los
 	controladores, ya sea en el constructor o en un metodo, lo recomendable es llamarlo en los metodos
@@ -358,3 +365,8 @@ https://victorroblesweb.es/2018/01/18/crear-helpers-en-laravel-5/
 
 /*****************Libreria para hacer peticiones https mas rapido http://docs.guzzlephp.org/en/stable/*/
 =>composer require guzzlehttp/guzzle
+/*****************Sentencia para obtener la url*/
+   {{dump(request()->url())}}
+/*****************Sentencia para obtenerel path*/
+   {{dump(request()->url())}}
+

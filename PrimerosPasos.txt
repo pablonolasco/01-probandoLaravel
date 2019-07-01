@@ -34,6 +34,9 @@ vendor- archvios creados por laravel
 /*****************Crear controller con artisan */
 =>php artisan mkdir:controller name_controller --resource para crear los metodos index, store,etc..
 
+/*****************Vuelve a cargar los archivos autoload del archivo composer.json*/
+=>composer dumpautoload
+
 /*****************Verificar las rutas con artisan */
 =>php artisan route:list
 
@@ -205,7 +208,14 @@ database/migrations/
 =>php artisan migrate:refresh, migra todas las tablas del proyecto, primero ejecuta un rollback y despues hace un migrate
 
 =>php artisan migrate:rollback, desace migracion
+
+=>php artisan migrate:rollback --step=1, desace migracion uno anterior
  public function down()// se ejecuta al utiliza php artisan migrate:rollback
+ 
+ crear migracion para modificar una tabla, se puede utilizar la sig. nomenclatura para que aparezcan las lineas de codigo de modificacion 
+=> php artisan make:migration add_phone_to_users_table
+=>php artisan make:migration add_phone_to_users_table --table=users o --create=tabla
+
  
 =>php artisan make:migrate, se utiliza para crear migraciones de archivos, se debe ser especifico al colocar el nombre
  php artisan make:migration create_users_table --create=users	de igual manera se pueden utilizar las migraciones
@@ -369,4 +379,15 @@ https://victorroblesweb.es/2018/01/18/crear-helpers-en-laravel-5/
    {{dump(request()->url())}}
 /*****************Sentencia para obtenerel path*/
    {{dump(request()->url())}}
+   
+   /*****************Comando para crear clase para enviar Email*/
+=>php artisan make:mail nombre_clase
+/**********pagina para crear correos de prueba*********/
+https://mailtrap.io/
+/**********pagina para correo en produccion*********/
+https://sendgrid.com/
+---libreria para que reconozca sendgrid laravel
+https://github.com/s-ichikawa/laravel-sendgrid-driver
 
+   /*****************Comando para limpiar la cache del proyecto*/
+=>php artisan config:cache

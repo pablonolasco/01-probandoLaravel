@@ -221,6 +221,10 @@ database/migrations/
  php artisan make:migration create_users_table --create=users	de igual manera se pueden utilizar las migraciones
 para modificar tablas ya echas mediante el metodo up, se coloca el nombre de la tabla y una funcion para hacer los cambios
 => php artisan make:migration category_product_table --create=category_product, crea una tabla pivote que es una relacion de N:M, el nombre de la tabla debe ir 
+
+
+
+
 en orden alfabetico y con el nombre de los modelos.
 function up(){
 Shema:: table('frutas',function(Blueprint $table){
@@ -391,3 +395,24 @@ https://github.com/s-ichikawa/laravel-sendgrid-driver
 
    /*****************Comando para limpiar la cache del proyecto*/
 =>php artisan config:cache
+
+/*********************************Factorys */
+Se debe colocar un arreglo con los campos del modelo
+https://github.com/fzaninotto/Faker libreria para crear factories con info fake
+=> php artisan make:factory ProductFactory
+=> php artisan migrate:refresh --seed, ejecutar las mugraciones y enseguida los seeder
+
+
+/*********************************Tinker */
+=>php artisan tinker, ayuda a ejecutar codigo php desde consola
+$productos=App\Product::first();, retorna primer elemento
+
+>>> use App\Product, con esto solo ejecutas el metodo
+>>> use App\Category
+
+>>> Category::count()
+$products=Product::where('category_id',1)->count();, regresa el total de productos con categoria_id = 5
+
+
+
+
